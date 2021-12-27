@@ -1055,9 +1055,10 @@ void Debugger::GetState(DebugState *state, bool includeMapperInfo)
 
 void Debugger::SetState(DebugState state)
 {
+	uint16_t pcHold = _cpu->GetPC();
 	_cpu->SetState(state.CPU);
 	_ppu->SetState(state.PPU);
-	if(state.CPU.PC != _cpu->GetPC()) {
+	if(state.CPU.PC != pcHold) {
 		SetNextStatement(state.CPU.PC);
 	}
 }

@@ -2001,9 +2001,9 @@
   <PropertyGroup>
     <PreBuildEvent>mkdir "Dependencies"
 
-if "x86" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\pgort140.dll" "pgort140.dll"
+if "x86" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\pgort140.dll" "pgort140.dll"
 
-if "x64" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64\pgort140.dll" "pgort140.dll"
+if "x64" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\pgort140.dll" "pgort140.dll"
 
 if "PGO Optimize" == "$(ConfigurationName)" (
 copy "$(SolutionDir)bin\x86\PGO Profile\MesenCore.dll" "Dependencies\MesenCore.x86.dll"

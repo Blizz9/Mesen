@@ -804,7 +804,7 @@ namespace Mesen.GUI.Forms
 						UpdateViewerSize(true);
 					}));
 					break;
-		 }
+			}
 
 			if(e.NotificationType != InteropEmu.ConsoleNotificationType.PpuFrameDone) {
 				UpdateMenus();

@@ -117,6 +117,8 @@ namespace Mesen.GUI
 		[DllImport(DLLPath)] public static extern IntPtr RegisterNotificationCallback(ConsoleId consoleId, NotificationListener.NotificationCallback callback);
 		[DllImport(DLLPath)] public static extern void UnregisterNotificationCallback(IntPtr notificationListener);
 
+		[DllImport(DLLPath)] public static extern void RegisterOpExecSync(ConsoleId consoleId, NotificationListener.OpExecSyncCallback callback);
+
 		[DllImport(DLLPath)] public static extern void DisplayMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string title, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string message, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string param1 = null);
 		[DllImport(DLLPath, EntryPoint = "GetLog")] private static extern IntPtr GetLogWrapper();
 		[DllImport(DLLPath)] public static extern void WriteLogEntry([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string message);
@@ -1175,8 +1177,11 @@ namespace Mesen.GUI
 			public delegate void NotificationEventHandler(NotificationEventArgs e);
 			public event NotificationEventHandler OnNotification;
 
+			public delegate void OpExecSyncCallback(IntPtr parameter);
+
 			//Need to keep a reference to this callback, or it will get garbage collected (since the only reference to it is on the native side)
 			NotificationCallback _callback;
+			OpExecSyncCallback _opExecSyncCallback;
 			IntPtr _notificationListener;
 
 			public NotificationListener(ConsoleId consoleId)
@@ -1184,7 +1189,15 @@ namespace Mesen.GUI
 				_callback = (int type, IntPtr parameter) => {
 					this.ProcessNotification(type, parameter);
 				};
+				_opExecSyncCallback = (IntPtr parameter) => {
+					UInt16 addr = ((UInt16)parameter);
+					Console.WriteLine(addr);
+					//DebugState state = new DebugState();
+					//InteropEmu.DebugGetState(ref state);
+					//Console.WriteLine(state.ClockRate);
+				};
 				_notificationListener = InteropEmu.RegisterNotificationCallback(consoleId, _callback);
+				InteropEmu.RegisterOpExecSync(consoleId, _opExecSyncCallback);
 			}
 
 			public void Dispose()

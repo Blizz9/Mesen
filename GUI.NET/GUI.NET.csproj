@@ -220,6 +220,9 @@
       <HintPath>Dependencies\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SDL2-CS, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SDL2-CS.dll.2.0.0.0\lib\net20\SDL2-CS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -1294,6 +1297,7 @@
     <Compile Include="RuntimeChecker.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="TestRunner.cs" />
+    <None Include="packages.config" />
     <None Include="Resources\MoveDown.png" />
     <None Include="Resources\MoveUp.png" />
     <None Include="Resources\NudDownArrowDarkTheme.png" />
@@ -2001,9 +2005,9 @@
   <PropertyGroup>
     <PreBuildEvent>mkdir "Dependencies"
 
-if "x86" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\pgort140.dll" "pgort140.dll"
+if "x86" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\pgort140.dll" "pgort140.dll"
 
-if "x64" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\pgort140.dll" "pgort140.dll"
+if "x64" == "$(PlatformName)" copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\pgort140.dll" "pgort140.dll"
 
 if "PGO Optimize" == "$(ConfigurationName)" (
 copy "$(SolutionDir)bin\x86\PGO Profile\MesenCore.dll" "Dependencies\MesenCore.x86.dll"

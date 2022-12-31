@@ -23,6 +23,8 @@ using Mesen.GUI.Forms.NetPlay;
 using Mesen.GUI.GoogleDriveIntegration;
 using Mesen.GUI.Properties;
 
+using SDL2;
+
 namespace Mesen.GUI.Forms
 {
 	public partial class frmMain : BaseInputForm
@@ -61,6 +63,7 @@ namespace Mesen.GUI.Forms
 		private bool _isDualSystem = false;
 
 		private frmFullscreenRenderer _frmFullscreenRenderer = null;
+		private IntPtr _sdlRenderer;
 
 		private Dictionary<EmulatorShortcut, Func<bool>> _actionEnabledFuncs = new Dictionary<EmulatorShortcut, Func<bool>>();
 
@@ -71,6 +74,47 @@ namespace Mesen.GUI.Forms
 
 		public frmMain(string[] args)
 		{
+			//if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0)
+			//{
+			//	Console.WriteLine($"There was an issue initilizing SDL. {SDL.SDL_GetError()}");
+			//}
+
+			//var window = SDL.SDL_CreateWindow("SDL .NET 6 Tutorial", SDL.SDL_WINDOWPOS_UNDEFINED, SDL.SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
+			//if (window == IntPtr.Zero)
+			//{
+			//	Console.WriteLine($"There was an issue creating the window. {SDL.SDL_GetError()}");
+			//}
+
+			//// Creates a new SDL hardware renderer using the default graphics device with VSYNC enabled.
+			//var renderer = SDL.SDL_CreateRenderer(window,
+			//													 -1,
+			//													 SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED |
+			//													 SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
+			//if (renderer == IntPtr.Zero)
+			//{
+			//	Console.WriteLine($"There was an issue creating the renderer. {SDL.SDL_GetError()}");
+			//}
+
+			//// Initilizes SDL_image for use with png files.
+			//if (SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG) == 0)
+			//{
+			//	//Console.WriteLine($"There was an issue initilizing SDL2_Image {SDL_image.IMG_GetError()}");
+			//}
+
+			//if (SDL.SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255) < 0)
+			//{
+			//	Console.WriteLine($"There was an issue with setting the render draw color. {SDL.SDL_GetError()}");
+			//}
+
+			//// Clears the current render surface.
+			//if (SDL.SDL_RenderClear(renderer) < 0)
+			//{
+			//	Console.WriteLine($"There was an issue with clearing the render surface. {SDL.SDL_GetError()}");
+			//}
+
+			//// Switches out the currently presented render surface with the one we just did work on.
+			//SDL.SDL_RenderPresent(renderer);
+
 			ThemeHelper.InitTheme(this.BackColor);
 			InitializeComponent();
 
@@ -381,6 +425,43 @@ namespace Mesen.GUI.Forms
 		void InitializeCore()
 		{
 			InteropEmu.InitializeEmu(ConfigManager.HomeFolder, this.Handle, ctrlRenderer.Handle, _noAudio, _noVideo, _noInput);
+			// _renderer.reset(new Renderer::Renderer(_console, (HWND)_viewerHandle, true));
+			SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
+			IntPtr sdlWindow = SDL.SDL_CreateWindow("SDL", SDL.SDL_WINDOWPOS_UNDEFINED, SDL.SDL_WINDOWPOS_UNDEFINED, 256, 240, SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
+			_sdlRenderer = SDL.SDL_CreateRenderer(sdlWindow,-1, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
+			SDL.SDL_SetRenderDrawColor(_sdlRenderer, 135, 206, 235, 255);
+			SDL.SDL_RenderClear(_sdlRenderer);
+			SDL.SDL_RenderPresent(_sdlRenderer);
+			//SDL.SDL_SysWMinfo info = new SDL.SDL_SysWMinfo();
+			//SDL.SDL_GetWindowWMInfo(this.Handle, ref info);
+			//IntPtr winHandle = info.info.win.window;
+			//var renderer = SDL.SDL_CreateRenderer(ctrlRenderer.Handle, -1, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED | SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC);
+			//var renderer = SDL.SDL_CreateRenderer(ctrlRendererDualSystem.Handle, -1, SDL.SDL_RendererFlags.SDL_RENDERER_TARGETTEXTURE);
+			//SDL.SDL
+			//if (renderer == IntPtr.Zero)
+			//{
+			//	Console.WriteLine($"There was an issue creating the renderer. {SDL.SDL_GetError()}");
+			//}
+
+			//// Initilizes SDL_image for use with png files.
+			//if (SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG) == 0)
+			//{
+			//	//Console.WriteLine($"There was an issue initilizing SDL2_Image {SDL_image.IMG_GetError()}");
+			//}
+
+			//if (SDL.SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255) < 0)
+			//{
+			//	Console.WriteLine($"There was an issue with setting the render draw color. {SDL.SDL_GetError()}");
+			//}
+
+			//// Clears the current render surface.
+			//if (SDL.SDL_RenderClear(renderer) < 0)
+			//{
+			//	Console.WriteLine($"There was an issue with clearing the render surface. {SDL.SDL_GetError()}");
+			//}
+
+			//// Switches out the currently presented render surface with the one we just did work on.
+			//SDL.SDL_RenderPresent(renderer);
 		}
 
 		void InitializeEmu()
@@ -786,7 +867,14 @@ namespace Mesen.GUI.Forms
 						UpdateViewerSize(true);
 					}));
 					break;
-			}
+
+				case InteropEmu.ConsoleNotificationType.PpuFrameDone:
+					UInt32 elapsedFrames = InteropEmu.NsfGetFrameCount();
+					SDL.SDL_SetRenderDrawColor(_sdlRenderer, (byte)(UInt32)(elapsedFrames % 256), 127, 127, 255);
+					SDL.SDL_RenderClear(_sdlRenderer);
+					SDL.SDL_RenderPresent(_sdlRenderer);
+					break;
+		 }
 
 			if(e.NotificationType != InteropEmu.ConsoleNotificationType.PpuFrameDone) {
 				UpdateMenus();

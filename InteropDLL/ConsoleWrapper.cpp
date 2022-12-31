@@ -532,6 +532,11 @@ namespace InteropEmu {
 			);
 		}
 
+		DllExport void __stdcall RegisterOpExecSync(ConsoleId consoleId, OpExecSyncCallback callback)
+		{
+			GetConsoleById(consoleId)->GetNotificationManager()->RegisterOpExecSync(callback);
+		}
+
 		DllExport void __stdcall DisplayMessage(char* title, char* message, char* param1) { MessageManager::DisplayMessage(title, message, param1 ? param1 : ""); }
 		DllExport const char* __stdcall GetLog()
 		{

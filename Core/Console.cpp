@@ -1528,6 +1528,9 @@ void Console::DebugAddDebugEvent(DebugEventType type)
 bool Console::DebugProcessRamOperation(MemoryOperationType type, uint16_t & addr, uint8_t & value)
 {
 #ifndef LIBRETRO
+	if (type == MemoryOperationType::ExecOpCode && addr == 0xfd03) {
+		_notificationManager->OpExecSync((void*)addr);
+	}
 	if(_debugger) {
 		return _debugger->ProcessRamOperation(type, addr, value);
 	}

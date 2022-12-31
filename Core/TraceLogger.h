@@ -81,7 +81,7 @@ private:
 	DisassemblyInfo _disassemblyCache[ExecutionLogSize];
 
 	State _cpuStateCacheCopy[ExecutionLogSize] = {};
-	PPUDebugState _ppuStateCacheCopy[ExecutionLogSize] = {};
+	// PPUDebugState _ppuStateCacheCopy[ExecutionLogSize] = {}; commented out to get build working
 	DisassemblyInfo _disassemblyCacheCopy[ExecutionLogSize];
 
 	SimpleLock _lock;

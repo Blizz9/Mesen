@@ -321,7 +321,7 @@ const char* TraceLogger::GetExecutionTrace(uint32_t lineCount)
 		auto lock = _lock.AcquireSafe();
 		lineCount = std::min(lineCount, _logCount);
 		memcpy(_cpuStateCacheCopy, _cpuStateCache, sizeof(_cpuStateCache));
-		memcpy(_ppuStateCacheCopy, _ppuStateCache, sizeof(_ppuStateCache));
+		// memcpy(_ppuStateCacheCopy, _ppuStateCache, sizeof(_ppuStateCache)); commented out to get build working
 		memcpy(_disassemblyCacheCopy, _disassemblyCache, sizeof(_disassemblyCache));
 		startPos = _currentPos + ExecutionLogSize - lineCount;
 	}
@@ -332,7 +332,7 @@ const char* TraceLogger::GetExecutionTrace(uint32_t lineCount)
 		string byteCode;
 		_disassemblyCacheCopy[index].GetByteCode(byteCode);
 		_executionTrace += byteCode + "\x1";
-		GetTraceRow(_executionTrace, _cpuStateCacheCopy[index], _ppuStateCacheCopy[index], _disassemblyCacheCopy[index]);
+		// GetTraceRow(_executionTrace, _cpuStateCacheCopy[index], _ppuStateCacheCopy[index], _disassemblyCacheCopy[index]); commented out to get build working
 	}
 
 	return _executionTrace.c_str();

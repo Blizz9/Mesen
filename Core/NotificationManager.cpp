@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "NotificationManager.h"
 
+OpExecSyncCallback _opExecSyncCallback;
+
 void NotificationManager::RegisterNotificationListener(shared_ptr<INotificationListener> notificationListener)
 {
 	auto lock = _lock.AcquireSafe();
@@ -47,4 +49,14 @@ void NotificationManager::SendNotification(ConsoleNotificationType type, void* p
 			listener->ProcessNotification(type, parameter);
 		}
 	}
+}
+
+void NotificationManager::RegisterOpExecSync(OpExecSyncCallback callback)
+{
+	_opExecSyncCallback = callback;
+}
+
+void NotificationManager::OpExecSync(void* parameter)
+{
+	_opExecSyncCallback(parameter);
 }

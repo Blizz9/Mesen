@@ -56,7 +56,7 @@ void NotificationManager::RegisterOpExecSync(OpExecSyncCallback callback)
 	_opExecSyncCallback = callback;
 }
 
-void NotificationManager::OpExecSync(void* parameter)
+void NotificationManager::OpExecSync(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, void* p8)
 {
-	_opExecSyncCallback(parameter);
+	_opExecSyncCallback(p1, p2, p3, p4, p5, p6, p7, p8);
 }

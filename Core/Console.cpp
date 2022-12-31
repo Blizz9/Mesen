@@ -1528,8 +1528,15 @@ void Console::DebugAddDebugEvent(DebugEventType type)
 bool Console::DebugProcessRamOperation(MemoryOperationType type, uint16_t & addr, uint8_t & value)
 {
 #ifndef LIBRETRO
-	if (type == MemoryOperationType::ExecOpCode && addr == 0xfd03) {
-		_notificationManager->OpExecSync((void*)addr);
+	if (type == MemoryOperationType::ExecOpCode && addr == 0xfe85) {
+		uint8_t frame = _memoryManager->DebugRead(0x00, true);
+		uint8_t p1CtrlState = _memoryManager->DebugRead(0x03, true);
+		uint8_t p2CtrlState = _memoryManager->DebugRead(0x04, true);
+		uint8_t ballX = _memoryManager->DebugRead(0x029B, true);
+		uint8_t ballY = _memoryManager->DebugRead(0x0298, true);
+		uint8_t p1PaddleY = _memoryManager->DebugRead(0x10, true);
+		uint8_t p2PaddleY = _memoryManager->DebugRead(0x11, true);
+		_notificationManager->OpExecSync((void*)addr, (void*)frame, (void*)p1CtrlState, (void*)p2CtrlState, (void*)ballX, (void*)ballY, (void*)p1PaddleY, (void*)p2PaddleY);
 	}
 	if(_debugger) {
 		return _debugger->ProcessRamOperation(type, addr, value);

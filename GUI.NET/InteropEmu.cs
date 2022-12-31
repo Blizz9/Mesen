@@ -1177,7 +1177,8 @@ namespace Mesen.GUI
 			public delegate void NotificationEventHandler(NotificationEventArgs e);
 			public event NotificationEventHandler OnNotification;
 
-			public delegate void OpExecSyncCallback(IntPtr parameter);
+			public delegate void OpExecSyncCallback(IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4, IntPtr p5, IntPtr p6, IntPtr p7, IntPtr p8);
+			public event OpExecSyncCallback OnOpExecSync;
 
 			//Need to keep a reference to this callback, or it will get garbage collected (since the only reference to it is on the native side)
 			NotificationCallback _callback;
@@ -1189,12 +1190,11 @@ namespace Mesen.GUI
 				_callback = (int type, IntPtr parameter) => {
 					this.ProcessNotification(type, parameter);
 				};
-				_opExecSyncCallback = (IntPtr parameter) => {
-					UInt16 addr = ((UInt16)parameter);
-					Console.WriteLine(addr);
-					//DebugState state = new DebugState();
-					//InteropEmu.DebugGetState(ref state);
-					//Console.WriteLine(state.ClockRate);
+				_opExecSyncCallback = (IntPtr p1, IntPtr p2, IntPtr p3, IntPtr p4, IntPtr p5, IntPtr p6, IntPtr p7, IntPtr p8) => {
+					if (OnOpExecSync != null)
+					{
+						OnOpExecSync(p1, p2, p3, p4, p5, p6, p7, p8);
+					}
 				};
 				_notificationListener = InteropEmu.RegisterNotificationCallback(consoleId, _callback);
 				InteropEmu.RegisterOpExecSync(consoleId, _opExecSyncCallback);

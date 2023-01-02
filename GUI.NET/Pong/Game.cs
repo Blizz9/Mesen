@@ -5,8 +5,8 @@ namespace Pong
 {
 	internal class Game
 	{
-		private const int PLAYER_1_GOAL_X_POSITION = 9;
-		private const int PLAYER_2_GOAL_X_POSITION = 241;
+		private const int PLAYER_1_GOAL_X_POSITION = 8;
+		private const int PLAYER_2_GOAL_X_POSITION = 240;
 
 		// main objects
 		private GameState _state;
@@ -44,8 +44,8 @@ namespace Pong
 			_player2Controller = new Controller();
 
 			_ball = new Ball();
-			_player1Paddle = new Paddle(25);
-			_player2Paddle = new Paddle(225);
+			_player1Paddle = new Paddle(24);
+			_player2Paddle = new Paddle(224);
 
 			// initialize SDL renderer
 			SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
@@ -103,7 +103,7 @@ namespace Pong
 
 			//Console.WriteLine(string.Format("({0},{1}) - ({2},{3})", (ballX + 1), (ballY + 1), _ball.XPosition, _ball.YPosition));
 
-			if ((_ball.XPosition != (ballX + 1)) || (_ball.YPosition != (ballY + 1)))
+			if ((_ball.XPosition != ballX) || (_ball.YPosition != (ballY + 1)))
 		   {
 				Console.WriteLine("MISMATCH!!!");
 		   }

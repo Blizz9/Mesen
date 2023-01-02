@@ -5,7 +5,7 @@
 		internal const int WIDTH = 8;
 		internal const int HEIGHT = 8;
 
-		private const int START_X_POSITION = 129;
+		private const int START_X_POSITION = 128;
 		private const int START_Y_POSITION = 129;
 		private const int CEILING_Y_POSITION = 72;
 		private const int FLOOR_Y_POSITION = 216;

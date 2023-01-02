@@ -209,7 +209,7 @@ namespace Mesen.GUI.Forms
 
 			_notifListener = new InteropEmu.NotificationListener(InteropEmu.ConsoleId.Master);
 			_notifListener.OnNotification += _notifListener_OnNotification;
-			_notifListener.OnOpExecSync += _game.Tick;
+			_notifListener.OnOpExecSync += _game.VBlank;
 
 			menuTimer.Start();
 

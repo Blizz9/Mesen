@@ -2,24 +2,45 @@
 {
 	internal class Ball
    {
-		private const int START_X_POSITION = 128;
-		private const int START_Y_POSITION = 128;
+		internal const int WIDTH = 8;
+		internal const int HEIGHT = 8;
+
+		private const int START_X_POSITION = 129;
+		private const int START_Y_POSITION = 129;
 		private const int CEILING_Y_POSITION = 72;
 		private const int FLOOR_Y_POSITION = 216;
-		private const int GOAL_1_X_POSITION = 7;
-		private const int GOAL_2_X_POSITION = 249;
 
 		internal int XPosition;
 		internal int YPosition;
-		private BallAngle _angle;
+		internal BallAngle Angle;
 
 		internal Ball()
 	   {
-			resetBallLocation();
-			_angle = BallAngle.DownLeft;
+			ResetLocation();
+			Angle = BallAngle.DownLeft;
 	   }
 
-		private void resetBallLocation()
+		internal int Top()
+		{
+			return (YPosition);
+		}
+
+		internal int Bottom()
+		{
+			return (YPosition + HEIGHT);
+		}
+
+		internal int Left()
+		{
+			return (XPosition);
+		}
+
+		internal int Right()
+		{
+			return (XPosition + WIDTH);
+		}
+
+		internal void ResetLocation()
 	   {
 			XPosition = START_X_POSITION;
 			YPosition = START_Y_POSITION;
@@ -27,44 +48,34 @@
 
 		internal void MoveBall()
 	   {
-			// check if ball enters a goal
-			if (XPosition <= GOAL_1_X_POSITION)
-		   {
-				resetBallLocation();
-			}
-			else if (XPosition >= GOAL_2_X_POSITION)
-		   {
-				resetBallLocation();
-			}
-
 			// bounce off ceiling
 			if (YPosition <= CEILING_Y_POSITION)
 			{
-				if (_angle == BallAngle.UpLeft)
+				if (Angle == BallAngle.UpLeft)
 				{
-					_angle = BallAngle.DownLeft;
+					Angle = BallAngle.DownLeft;
 				}
-				else if (_angle == BallAngle.UpRight)
+				else if (Angle == BallAngle.UpRight)
 				{
-					_angle = BallAngle.DownRight;
+					Angle = BallAngle.DownRight;
 				}
 			}
 
 			// bounce off floor
 			if (YPosition >= FLOOR_Y_POSITION)
 		   {
-				if (_angle == BallAngle.DownLeft)
+				if (Angle == BallAngle.DownLeft)
 			   {
-					_angle = BallAngle.UpLeft;
+					Angle = BallAngle.UpLeft;
 			   }
-				else if (_angle == BallAngle.DownRight)
+				else if (Angle == BallAngle.DownRight)
 			   {
-					_angle = BallAngle.UpRight;
+					Angle = BallAngle.UpRight;
 			   }
 		   }
 
 			// move ball one click
-			switch (_angle)
+			switch (Angle)
 			{
 				case BallAngle.UpRight:
 					XPosition++;

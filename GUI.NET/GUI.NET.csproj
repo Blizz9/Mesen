@@ -1290,6 +1290,11 @@
     <Compile Include="GoogleDriveIntegration\MesenCodeReceiver.cs" />
     <Compile Include="InteropEmu.cs" />
     <Compile Include="MonoToolStripHelper.cs" />
+    <Compile Include="Pong\Paddle.cs" />
+    <Compile Include="Pong\GameState.cs" />
+    <Compile Include="Pong\Controller.cs" />
+    <Compile Include="Pong\Ball.cs" />
+    <Compile Include="Pong\BallAngle.cs" />
     <Compile Include="Pong\Game.cs" />
     <Compile Include="ThemeHelper.cs" />
     <Compile Include="Program.cs" />
